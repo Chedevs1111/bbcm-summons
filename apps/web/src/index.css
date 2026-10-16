@@ -1,0 +1,210 @@
+@import 'tailwindcss';
+
+/*
+ * Identity: navy #0f172a chrome, struck gold accent.
+ *
+ * `gold-*` is the brand accent: buttons, tabs, focus rings, the logo, active nav.
+ * `amber-*` is left as Tailwind's stock amber and means one thing only — caution.
+ * Needs-review, low confidence, unsaved changes, validation notices.
+ *
+ * Keeping them apart matters. While the accent was amber the two were the same colour
+ * by coincidence, so a warning carried no more signal than a primary button. Anything
+ * that is merely decorative or brand-coloured belongs in `gold-*`; reach for `amber-*`
+ * only when the interface is asking someone to look at something.
+ */
+@theme {
+  --color-navy-950: #020617;
+  --color-navy-900: #0f172a;
+  --color-navy-800: #1a2740;
+  --color-navy-700: #2b3b5a;
+
+  --color-gold-50: #fdf8e7;
+  --color-gold-100: #fdf3d0;
+  --color-gold-200: #f7e7ad;
+  --color-gold-300: #eed37a;
+  --color-gold-400: #e3c04b;
+  --color-gold-500: #c9a227;
+  --color-gold-600: #a8801f;
+  --color-gold-700: #8a6a15;
+  --color-gold-800: #6d5311;
+  --color-gold-900: #4e3b0c;
+
+  --font-serif-doc: Georgia, 'Times New Roman', serif;
+  --ease-brand: cubic-bezier(0.22, 0.68, 0.32, 1);
+}
+
+/* Gold is a gradient, never a flat fill: one yellow reads as highlighter, three
+   stops read as metal. Used for the wordmark and the BS monogram. */
+@utility goldtext {
+  background: linear-gradient(
+    135deg,
+    #f7e7ad 0%, #e3c04b 22%, #c9a227 46%,
+    #8a6a15 62%, #e3c04b 84%, #f7e7ad 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- Motion ----
+ *
+ * Reveal starts at opacity 0, so whatever flips it must be something that cannot
+ * silently fail to run. `useReveal` uses a geometry check on scroll rather than an
+ * IntersectionObserver, which does not fire at all in some embedded and offscreen
+ * browsing contexts — there, the page would simply stay blank.
+ */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+}
+.reveal[data-shown='1'] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.55s var(--ease-brand),
+    transform 0.55s var(--ease-brand);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* The one piece of ambient motion: a slow sheen across the monogram. */
+.mark-sheen {
+  position: relative;
+  overflow: hidden;
+}
+.mark-sheen::after {
+  content: '';
+  position: absolute;
+  inset: -60% -140%;
+  background: linear-gradient(
+    75deg,
+    transparent 42%,
+    rgb(255 255 255 / 0.55) 50%,
+    transparent 58%
+  );
+  transform: translateX(-60%);
+  animation: mark-sheen 7s var(--ease-brand) 1.2s infinite;
+}
+@keyframes mark-sheen {
+  0%,
+  72% {
+    transform: translateX(-60%);
+  }
+  100% {
+    transform: translateX(60%);
+  }
+}
+
+/* Gold scroll-progress hairline. */
+.scroll-progress {
+  transform: scaleX(var(--scroll-progress, 0));
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, #8a6a15, #e3c04b 45%, #f7e7ad 70%, #c9a227);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .mark-sheen::after {
+    display: none;
+  }
+}
+
+/* ---- Rendered court document ---- */
+
+.court-doc {
+  font-family: var(--font-serif-doc);
+  font-size: 12pt;
+  line-height: 1.5;
+  color: #0f172a;
+}
+
+.court-doc .line {
+  margin: 0;
+  min-height: 1.5em;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.court-doc .line--center {
+  text-align: center;
+}
+.court-doc .line--right {
+  text-align: right;
+}
+.court-doc .line--split {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.court-doc .rule {
+  border: 0;
+  margin: 0.4em 0;
+}
+.court-doc .rule--double {
+  border-top: 3px double #0f172a;
+}
+.court-doc .rule--single {
+  border-top: 1px solid #64748b;
+}
+.court-doc .rule--signature {
+  border-top: 1px solid #0f172a;
+  width: 60%;
+  margin-top: 1.6em;
+}
+
+.court-doc .sig-table {
+  width: 100%;
+  margin-top: 1.5em;
+  border-collapse: collapse;
+}
+.court-doc .sig-table td {
+  vertical-align: top;
+  width: 50%;
+  padding-right: 1.5rem;
+}
+
+/* A4 page for the preview: 210mm wide with 25.4mm margins. */
+.a4-page {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 25.4mm;
+  background: white;
+  box-shadow: 0 1px 3px rgb(15 23 42 / 0.12), 0 8px 24px rgb(15 23 42 / 0.08);
+  margin: 0 auto;
+}
+
+@media print {
+  .a4-page {
+    width: auto;
+    min-height: 0;
+    padding: 0;
+    box-shadow: none;
+    margin: 0;
+  }
+  .no-print {
+    display: none !important;
+  }
+}

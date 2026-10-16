@@ -1,0 +1,114 @@
+<title>Mokoena v Mokoena — Court Documents</title>
+
+<style>
+  :root{
+    --navy:#0f172a; --gold:#c9a227;
+    --ground:#eceff4; --paper:#fff; --ink:#14181f;
+    --chrome:#fff; --chrome-ink:#46536b; --line:#dfe4ec;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --ground:#0a1020; --chrome:#111a2c; --chrome-ink:#b4c2dc; --line:#233350; }
+  }
+  :root[data-theme="dark"]{ --ground:#0a1020; --chrome:#111a2c; --chrome-ink:#b4c2dc; --line:#233350; }
+  :root[data-theme="light"]{ --ground:#eceff4; --chrome:#fff; --chrome-ink:#46536b; --line:#dfe4ec; }
+
+  *,*::before,*::after{box-sizing:border-box}
+  body{
+    margin:0; background:var(--ground); color:var(--chrome-ink);
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- chrome (never prints) ---------- */
+  .bar{
+    position:sticky; top:0; z-index:10;
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+    padding:11px 20px; background:var(--chrome); border-bottom:1px solid var(--line);
+  }
+  .bar__brand{display:flex; align-items:center; gap:11px; margin-right:6px}
+  .mark{
+    width:34px;height:34px;flex:none;display:grid;place-items:center;border-radius:9px;
+    background:var(--navy); border:1px solid rgb(201 162 39/.5);
+  }
+  .mark b{
+    font-family:Georgia,serif;font-size:15px;
+    background:linear-gradient(135deg,#f7e7ad,#e3c04b 25%,#c9a227 50%,#8a6a15 65%,#f7e7ad);
+    background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+  }
+  .bar__title{font-size:13.5px;font-weight:650;color:var(--chrome-ink)}
+  .bar__sub{font-size:11px;color:var(--chrome-ink);opacity:.7}
+  .bar nav{display:flex; gap:4px; flex-wrap:wrap; margin-left:auto}
+  .bar a, .bar button{
+    font:inherit; font-size:12.5px; color:var(--chrome-ink); text-decoration:none; cursor:pointer;
+    padding:6px 11px; border-radius:7px; border:1px solid var(--line); background:transparent;
+  }
+  .bar a:hover, .bar button:hover{border-color:var(--gold); color:inherit}
+  .bar .print{background:var(--gold); border-color:var(--gold); color:#231a02; font-weight:650}
+
+  /* ---------- paper ---------- */
+  main{padding:26px 16px 60px}
+  .sheet{
+    width:210mm; min-height:297mm; margin:0 auto 26px; padding:25.4mm;
+    background:var(--paper); color:var(--ink);
+    box-shadow:0 1px 3px rgb(15 23 42/.14), 0 12px 30px -12px rgb(15 23 42/.3);
+  }
+  .sheet__tag{
+    font-family:Inter,system-ui,sans-serif; font-size:9.5px; letter-spacing:.14em;
+    text-transform:uppercase; color:#8b93a3; margin:0 0 14px;
+  }
+
+  .doc{font-family:Georgia,"Times New Roman",Times,serif; font-size:12pt; line-height:1.5}
+  .doc .line{margin:0; min-height:1.5em; white-space:pre-wrap; word-break:break-word}
+  .doc .line--center{text-align:center}
+  .doc .line--right{text-align:right}
+  .doc .line--split{display:flex; justify-content:space-between; gap:2rem}
+  .doc .rule{border:0; margin:.45em 0}
+  .doc .rule--double{border-top:3px double currentColor}
+  .doc .rule--single{border-top:1px solid #64748b}
+  .doc .sigtable{display:grid; grid-template-columns:1fr 1fr; gap:2.5rem; margin-top:1.4em}
+  .doc .sigtable>div{white-space:pre-wrap}
+
+  @media (max-width:230mm){
+    .sheet{width:auto; max-width:210mm; min-height:0; padding:26px 22px}
+  }
+
+  /* ---------- print ---------- */
+  @page{size:A4; margin:25.4mm}
+  @media print{
+    body{background:#fff}
+    .bar{display:none}
+    main{padding:0}
+    .sheet{
+      width:auto; min-height:0; margin:0; padding:0;
+      box-shadow:none; break-after:page; page-break-after:always;
+    }
+    .sheet:last-child{break-after:auto; page-break-after:auto}
+    .sheet__tag{display:none}
+  }
+</style>
+
+<div class="bar">
+  <div class="bar__brand">
+    <div class="mark"><b>BS</b></div>
+    <div>
+      <p class="bar__title">Mokoena v Mokoena</p>
+      <p class="bar__sub">VDM/2026/D/007 &middot; Case 45678/2026 &middot; Gauteng Division, Pretoria</p>
+    </div>
+  </div>
+  <nav>
+    <a href="#summons">Combined Summons</a><a href="#particulars_of_claim">Particulars of Claim</a><a href="#settlement_agreement">Settlement Agreement</a><a href="#index_page">Index</a><a href="#annexure_schedule">Annexure Schedule</a>
+    <button class="print" onclick="window.print()">Print</button>
+  </nav>
+</div>
+
+<main>
+  <article class="sheet" id="summons"><p class="sheet__tag">Combined Summons &middot; Mokoena v Mokoena &middot; case 45678/2026</p><div class="doc"><p class="line line--center"><strong>IN THE HIGH COURT OF SOUTH AFRICA</p><p class="line line--center">(GAUTENG DIVISION, PRETORIA)</strong></p><p class="line">&nbsp;</p><p class="line line--right">CASE NO: 45678/2026</p><p class="line">&nbsp;</p><p class="line">In the matter between:</p><p class="line">&nbsp;</p><p class="line line--split"><span><strong>THANDIWE GRACE MOKOENA</strong></span><span><strong>PLAINTIFF</strong></span></p><p class="line">(ID NO: 8801010509084)</p><p class="line">&nbsp;</p><p class="line">and</p><p class="line">&nbsp;</p><p class="line line--split"><span><strong>SIPHO DANIEL MOKOENA</strong></span><span><strong>DEFENDANT</strong></span></p><p class="line">(ID NO: 8506155048083)</p><p class="line">&nbsp;</p><hr class="rule rule--double"><p class="line line--center"><strong><u>SUMMONS</u></strong></p><hr class="rule rule--double"><p class="line">&nbsp;</p><p class="line">TO: THE SHERIFF OR HIS DEPUTY</p><p class="line">&nbsp;</p><p class="line">INFORM SIPHO DANIEL MOKOENA, the Defendant herein, that the Plaintiff has instituted action against the Defendant in this Honourable Court for relief as set out in the attached Particulars of Claim.</p><p class="line">&nbsp;</p><p class="line">DATED at Pretoria on this 3rd day of August 2026.</p><p class="line">&nbsp;</p><p class="line">_______________________________________</p><p class="line">PLAINTIFF'S ATTORNEYS</p><p class="line">VAN DER MERWE &amp; ASSOCIATES</p><p class="line">123 Church Street</p><p class="line">Pretoria</p><p class="line">Gauteng</p></div></article><article class="sheet" id="particulars_of_claim"><p class="sheet__tag">Particulars of Claim &middot; Mokoena v Mokoena &middot; case 45678/2026</p><div class="doc"><p class="line line--center"><strong>IN THE HIGH COURT OF SOUTH AFRICA</p><p class="line line--center">(GAUTENG DIVISION, PRETORIA)</strong></p><p class="line">&nbsp;</p><p class="line line--right">CASE NO: 45678/2026</p><p class="line">&nbsp;</p><hr class="rule rule--double"><p class="line line--center"><strong><u>PARTICULARS OF CLAIM</u></strong></p><hr class="rule rule--double"><p class="line">&nbsp;</p><p class="line">1. The Plaintiff is THANDIWE GRACE MOKOENA, an adult female teacher, with ID No 8801010509084, residing at 45 Jacaranda Avenue, Arcadia, Pretoria.</p><p class="line">&nbsp;</p><p class="line">2. The Defendant is SIPHO DANIEL MOKOENA, an adult male engineer, with ID No 8506155048083, residing at 12 Protea Road, Centurion.</p><p class="line">&nbsp;</p><p class="line">3. The parties were married to each other on 14 February 2015 at Pretoria, which marriage is in community of property and which marriage still subsists.</p><p class="line">&nbsp;</p><p class="line">4. There is one minor child born of the marriage, namely:</p><p class="line">   4.1 Lerato Mokoena, born on 20 March 2017, presently 9 years of age;</p><p class="line">&nbsp;</p><p class="line">5. The marriage relationship between the parties has irretrievably broken down.</p><p class="line">&nbsp;</p><p class="line">6. The parties are married in community of property and the joint estate falls to be divided equally between them.</p><p class="line">&nbsp;</p><p class="line">WHEREFORE the Plaintiff prays for an order in the following terms:</p><p class="line">(a) A decree of divorce;</p><p class="line">(b) Division of the joint estate / forfeiture as set out herein;</p><p class="line">(c) Such further and/or alternative relief as this Honourable Court may deem just.</p><p class="line">&nbsp;</p><p class="line">DATED at Pretoria on this 3rd day of August 2026.</p><p class="line">&nbsp;</p><p class="line">_______________________________________</p><p class="line">PLAINTIFF'S ATTORNEYS</p><p class="line">VAN DER MERWE &amp; ASSOCIATES</p></div></article><article class="sheet" id="settlement_agreement"><p class="sheet__tag">Settlement Agreement &middot; Mokoena v Mokoena &middot; case 45678/2026</p><div class="doc"><p class="line line--center"><strong><u>SETTLEMENT AGREEMENT</u></strong></p><p class="line">&nbsp;</p><p class="line">ENTERED INTO BETWEEN:</p><p class="line">&nbsp;</p><p class="line"><strong>THANDIWE GRACE MOKOENA</strong></p><p class="line">(ID NO: 8801010509084)</p><p class="line">("the Plaintiff")</p><p class="line">&nbsp;</p><p class="line">AND</p><p class="line">&nbsp;</p><p class="line"><strong>SIPHO DANIEL MOKOENA</strong></p><p class="line">(ID NO: 8506155048083)</p><p class="line">("the Defendant")</p><p class="line">&nbsp;</p><hr class="rule rule--single"><p class="line"><strong>1. PREAMBLE</strong></p><p class="line">&nbsp;</p><p class="line">1.1 The parties were married on 14 February 2015 at Pretoria.</p><p class="line">1.2 The marriage regime is: in community of property.</p><p class="line">1.3 There is one minor child of the marriage.</p><p class="line">&nbsp;</p><p class="line"><strong>2. DIVORCE</strong></p><p class="line">&nbsp;</p><p class="line">The parties agree that a decree of divorce be granted on the terms set out herein.</p><p class="line">&nbsp;</p><p class="line"><strong>3. CARE OF MINOR CHILDREN</strong></p><p class="line">&nbsp;</p><p class="line">[Insert care and contact arrangements]</p><p class="line">&nbsp;</p><p class="line"><strong>4. PROPRIETARY CONSEQUENCES</strong></p><p class="line">&nbsp;</p><p class="line">[Insert proprietary terms]</p><p class="line">&nbsp;</p><hr class="rule rule--single"><p class="line">&nbsp;</p><p class="line">&nbsp;</p><div class="sigtable"><div>SIGNED at Pretoria on 3rd day of August 2026
+
+_______________________________________
+THANDIWE GRACE MOKOENA
+PLAINTIFF</div><div>SIGNED at Pretoria on 3rd day of August 2026
+
+_______________________________________
+SIPHO DANIEL MOKOENA
+DEFENDANT</div></div><p class="line">&nbsp;</p></div></article><article class="sheet" id="index_page"><p class="sheet__tag">Index &middot; Mokoena v Mokoena &middot; case 45678/2026</p><div class="doc"><p class="line line--center"><strong>IN THE HIGH COURT OF SOUTH AFRICA</p><p class="line line--center">(GAUTENG DIVISION, PRETORIA)</strong></p><p class="line">&nbsp;</p><p class="line line--right">CASE NO: 45678/2026</p><p class="line">&nbsp;</p><p class="line">In the matter between:</p><p class="line">&nbsp;</p><p class="line line--split"><span><strong>THANDIWE GRACE MOKOENA</strong></span><span><strong>PLAINTIFF</strong></span></p><p class="line">&nbsp;</p><p class="line">and</p><p class="line">&nbsp;</p><p class="line line--split"><span><strong>SIPHO DANIEL MOKOENA</strong></span><span><strong>DEFENDANT</strong></span></p><p class="line">&nbsp;</p><hr class="rule rule--double"><p class="line line--center"><strong><u>INDEX</u></strong></p><hr class="rule rule--double"><p class="line">&nbsp;</p><p class="line">1. Combined Summons</p><p class="line">2. Particulars of Claim</p><p class="line">3. Settlement Agreement</p><p class="line">4. Annexure Schedule</p><p class="line">5. Annexure "A" — Marriage Certificate</p><p class="line">6. Annexure "B" — Identity Documents</p><p class="line">7. Annexure "C" — Birth Certificates</p></div></article><article class="sheet" id="annexure_schedule"><p class="sheet__tag">Annexure Schedule &middot; Mokoena v Mokoena &middot; case 45678/2026</p><div class="doc"><p class="line line--center"><strong><u>ANNEXURE SCHEDULE</u></strong></p><p class="line">&nbsp;</p><p class="line line--right">CASE NO: 45678/2026</p><p class="line">&nbsp;</p><hr class="rule rule--single"><p class="line">[No annexures attached]</p><hr class="rule rule--single"><p class="line">&nbsp;</p><p class="line"><strong>NOTE:</strong> All annexures are true copies of the original documents. The originals are available for inspection at the offices of the Plaintiff's attorneys.</p></div></article>
+</main>

@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "types": ["@cloudflare/workers-types", "vitest/globals"],
+    "baseUrl": ".",
+    "paths": {
+      "@bbcm/schema": ["packages/schema/src/index.ts"],
+      "@bbcm/schema/*": ["packages/schema/src/*"],
+      "@bbcm/documents": ["packages/documents/src/index.ts"],
+      "@bbcm/documents/*": ["packages/documents/src/*"]
+    }
+  },
+  "include": ["packages/**/*.ts", "apps/**/*.ts", "apps/**/*.tsx"],
+  "exclude": [
+    "node_modules",
+    "**/node_modules",
+    "**/dist",
+    "**/.wrangler",
+    // Build configs are validated by their own tool. The web app pins Vite 6 while
+    // vitest pulls Vite 5 at the root, and checking both here compares two copies
+    // of the same plugin types against each other.
+    "**/vite.config.ts",
+    "**/vitest.config.ts"
+  ]
+}

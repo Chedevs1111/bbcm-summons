@@ -1,0 +1,626 @@
+<title>BBCM Summons v2 — Project Overview</title>
+
+<style>
+  :root {
+    --navy-950:#020617; --navy-900:#0f172a; --navy-800:#1a2740;
+    --gold-200:#f7e7ad; --gold-400:#e3c04b; --gold:#c9a227; --gold-700:#8a6a15;
+    --metal:linear-gradient(135deg,#f7e7ad 0%,#e3c04b 22%,#c9a227 46%,#8a6a15 62%,#e3c04b 84%,#f7e7ad 100%);
+
+    --ground:#f4f6fa; --surface:#fff; --raised:#f8fafc;
+    --line:#e2e7f0; --line-soft:#eef2f7;
+    --ink:#0e1726; --ink-2:#46536b; --ink-3:#67748c; --ink-4:#96a1b5;
+
+    --good:#067647; --good-bg:#ecfdf3; --good-line:#a9e5c3;
+    --warn:#b54708; --warn-bg:#fffaeb; --warn-line:#f2d18b;
+    --crit:#b42318; --crit-bg:#fef3f2; --crit-line:#f4b7b2;
+    --info:#175cd3; --info-bg:#eff6ff; --info-line:#b3d1fb;
+
+    --measure:70ch;
+    --shadow:0 1px 2px rgb(14 23 38 / .05), 0 1px 3px rgb(14 23 38 / .05);
+    --shadow-lg:0 14px 30px -12px rgb(14 23 38 / .2);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground:#080d18; --surface:#101a2c; --raised:#16223a;
+      --line:#233350; --line-soft:#1b2740;
+      --ink:#e9eefb; --ink-2:#b4c2dc; --ink-3:#8ea0be; --ink-4:#6b7d9c;
+      --good:#3ccb7f; --good-bg:#052c1d; --good-line:#12613e;
+      --warn:#fdb022; --warn-bg:#32220a; --warn-line:#7a5312;
+      --crit:#fda29b; --crit-bg:#37110f; --crit-line:#7d2820;
+      --info:#84caff; --info-bg:#0b2140; --info-line:#1d4a86;
+      --shadow:0 1px 2px rgb(0 0 0 / .5);
+      --shadow-lg:0 16px 34px -14px rgb(0 0 0 / .7);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#080d18; --surface:#101a2c; --raised:#16223a;
+    --line:#233350; --line-soft:#1b2740;
+    --ink:#e9eefb; --ink-2:#b4c2dc; --ink-3:#8ea0be; --ink-4:#6b7d9c;
+    --good:#3ccb7f; --good-bg:#052c1d; --good-line:#12613e;
+    --warn:#fdb022; --warn-bg:#32220a; --warn-line:#7a5312;
+    --crit:#fda29b; --crit-bg:#37110f; --crit-line:#7d2820;
+    --info:#84caff; --info-bg:#0b2140; --info-line:#1d4a86;
+    --shadow:0 1px 2px rgb(0 0 0 / .5);
+    --shadow-lg:0 16px 34px -14px rgb(0 0 0 / .7);
+  }
+  :root[data-theme="light"]{
+    --ground:#f4f6fa; --surface:#fff; --raised:#f8fafc;
+    --line:#e2e7f0; --line-soft:#eef2f7;
+    --ink:#0e1726; --ink-2:#46536b; --ink-3:#67748c; --ink-4:#96a1b5;
+    --good:#067647; --good-bg:#ecfdf3; --good-line:#a9e5c3;
+    --warn:#b54708; --warn-bg:#fffaeb; --warn-line:#f2d18b;
+    --crit:#b42318; --crit-bg:#fef3f2; --crit-line:#f4b7b2;
+    --info:#175cd3; --info-bg:#eff6ff; --info-line:#b3d1fb;
+    --shadow:0 1px 2px rgb(14 23 38 / .05), 0 1px 3px rgb(14 23 38 / .05);
+    --shadow-lg:0 14px 30px -12px rgb(14 23 38 / .2);
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+
+  body{
+    margin:0; background:var(--ground); color:var(--ink);
+    font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size:15.5px; line-height:1.65; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{margin:0; text-wrap:balance; font-family:Georgia,"Times New Roman",serif; font-weight:700; letter-spacing:-.012em}
+  p{margin:0}
+  a{color:inherit}
+
+  .wrap{max-width:1000px; margin:0 auto; padding:0 22px}
+  .prose{max-width:var(--measure)}
+  .stack{display:flex; flex-direction:column; gap:14px}
+
+  .eyebrow{font-size:11px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:var(--ink-4)}
+  .goldtext{background:var(--metal); background-clip:text; -webkit-background-clip:text; color:transparent; -webkit-text-fill-color:transparent}
+  .num{font-variant-numeric:tabular-nums}
+  code, .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace; font-size:.88em}
+  code{background:var(--raised); border:1px solid var(--line-soft); border-radius:5px; padding:.08em .34em}
+
+  /* ---------- masthead ---------- */
+  header.top{
+    background:
+      radial-gradient(110% 160% at 88% -30%, rgb(201 162 39 / .26), transparent 58%),
+      linear-gradient(150deg,var(--navy-950),var(--navy-900) 60%,var(--navy-800));
+    color:#fff; padding:52px 0 44px; position:relative; overflow:hidden;
+    border-bottom:1px solid rgb(201 162 39 / .25);
+  }
+  header.top::after{
+    content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:var(--metal);
+  }
+  .brand{display:flex; align-items:center; gap:14px; margin-bottom:26px}
+  .mark{
+    width:46px; height:46px; flex:none; display:grid; place-items:center; border-radius:12px;
+    background:linear-gradient(160deg,rgb(255 255 255/.08),rgb(0 0 0/.3)),var(--navy-950);
+    border:1px solid rgb(201 162 39/.55);
+  }
+  .mark b{font-family:Georgia,serif; font-size:19px; background:var(--metal); background-clip:text; -webkit-background-clip:text; color:transparent; -webkit-text-fill-color:transparent}
+  header.top h1{font-size:clamp(29px,4.6vw,42px); line-height:1.12; margin-bottom:12px}
+  header.top .lede{color:#b7c4dc; max-width:62ch; font-size:16.5px}
+  .meta{display:flex; flex-wrap:wrap; gap:8px; margin-top:22px}
+  .meta span{
+    font-size:12px; padding:4px 11px; border-radius:999px;
+    border:1px solid rgb(255 255 255/.18); color:#cfd9ec; background:rgb(255 255 255/.05);
+  }
+
+  /* ---------- sections ---------- */
+  section{padding:44px 0; border-bottom:1px solid var(--line)}
+  section:last-of-type{border-bottom:0}
+  .sec-head{display:flex; align-items:baseline; gap:14px; margin-bottom:20px; flex-wrap:wrap}
+  .sec-head h2{font-size:25px}
+  .sec-head .eyebrow{margin-left:auto}
+
+  /* ---------- callouts ---------- */
+  .call{
+    border-radius:12px; padding:18px 20px; border:1px solid; display:flex; flex-direction:column; gap:8px;
+  }
+  .call h3{font-size:16.5px}
+  .call--crit{background:var(--crit-bg); border-color:var(--crit-line); color:var(--crit)}
+  .call--warn{background:var(--warn-bg); border-color:var(--warn-line); color:var(--warn)}
+  .call--info{background:var(--info-bg); border-color:var(--info-line); color:var(--info)}
+  .call p{color:inherit; opacity:.96}
+  .call code{background:rgb(0 0 0/.06); border-color:transparent; color:inherit}
+
+  /* ---------- cards & tiles ---------- */
+  .cards{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(258px,1fr))}
+  .card{
+    background:var(--surface); border:1px solid var(--line); border-radius:12px;
+    padding:18px 19px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:9px;
+  }
+  .card h3{font-size:17px}
+  .card p{font-size:14px; color:var(--ink-2)}
+
+  .tiles{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+  .tile{
+    background:var(--surface); border:1px solid var(--line); border-radius:12px;
+    padding:15px 16px; box-shadow:var(--shadow); position:relative; overflow:hidden;
+  }
+  .tile::before{content:""; position:absolute; inset:0 auto 0 0; width:3px; background:var(--metal)}
+  .tile b{display:block; font-family:Georgia,serif; font-size:27px; letter-spacing:-.02em; font-variant-numeric:tabular-nums}
+  .tile span{font-size:12.5px; color:var(--ink-3)}
+
+  /* ---------- status pills ---------- */
+  .pill{
+    display:inline-flex; align-items:center; gap:6px; padding:2px 10px; border-radius:999px;
+    font-size:11.5px; font-weight:650; border:1px solid; white-space:nowrap;
+  }
+  .pill--done{background:var(--good-bg); color:var(--good); border-color:var(--good-line)}
+  .pill--caveat{background:var(--warn-bg); color:var(--warn); border-color:var(--warn-line)}
+  .pill--open{background:var(--raised); color:var(--ink-3); border-color:var(--line)}
+  .pill--crit{background:var(--crit-bg); color:var(--crit); border-color:var(--crit-line)}
+
+  /* ---------- tables ---------- */
+  .scroll-x{overflow-x:auto; border:1px solid var(--line); border-radius:12px; background:var(--surface); box-shadow:var(--shadow)}
+  table{border-collapse:collapse; width:100%; font-size:14px; min-width:520px}
+  th,td{padding:11px 15px; text-align:left; border-bottom:1px solid var(--line-soft); vertical-align:top}
+  thead th{font-size:11px; text-transform:uppercase; letter-spacing:.09em; color:var(--ink-4); background:var(--raised)}
+  tbody tr:last-child td{border-bottom:0}
+  td.num, th.num{text-align:right; font-variant-numeric:tabular-nums}
+
+  /* ---------- decisions ---------- */
+  .decision{
+    border-left:3px solid; border-image:var(--metal) 1;
+    padding:2px 0 2px 18px; display:flex; flex-direction:column; gap:6px;
+  }
+  .decision h3{font-size:16px}
+  .decision p{font-size:14.5px; color:var(--ink-2)}
+  .decisions{display:flex; flex-direction:column; gap:24px}
+
+  /* ---------- diagram ---------- */
+  .diagram{
+    background:var(--surface); border:1px solid var(--line); border-radius:12px;
+    padding:20px; box-shadow:var(--shadow); overflow-x:auto;
+  }
+  .diagram svg{display:block; margin:0 auto; max-width:100%; height:auto}
+  .diagram text{font-family:Inter,system-ui,sans-serif}
+
+  /* ---------- backlog ---------- */
+  ol.backlog{margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:2px}
+  ol.backlog li{
+    display:grid; grid-template-columns:26px 1fr auto; gap:14px; align-items:baseline;
+    padding:11px 4px; border-top:1px solid var(--line-soft);
+  }
+  ol.backlog li b{color:var(--gold-700); font-variant-numeric:tabular-nums; font-weight:650; font-size:13px}
+  ol.backlog .why{display:block; font-size:13px; color:var(--ink-3); margin-top:2px}
+
+  footer{padding:34px 0 60px; color:var(--ink-3); font-size:13.5px}
+
+  .toggle{
+    position:fixed; right:16px; top:16px; z-index:20;
+    border:1px solid rgb(255 255 255/.25); background:rgb(255 255 255/.1); color:#fff;
+    border-radius:9px; padding:7px 12px; font-size:12.5px; cursor:pointer; backdrop-filter:blur(6px);
+  }
+  .toggle:hover{background:rgb(255 255 255/.18)}
+
+  @media (max-width:640px){
+    section{padding:32px 0}
+    .wrap{padding:0 16px}
+  }
+</style>
+
+<button class="toggle" id="themeBtn">Toggle theme</button>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <div class="mark"><b>BS</b></div>
+      <div>
+        <p class="goldtext" style="font-weight:700;font-size:16px">BBCM Summons</p>
+        <p class="eyebrow" style="color:#8ea0be">Legal Document Generator</p>
+      </div>
+    </div>
+
+    <p class="eyebrow goldtext">Project overview</p>
+    <h1>A rebuild of a South African divorce&nbsp;document system that was giving away its clients&rsquo; data</h1>
+    <p class="lede">
+      Everything the original app did, rebuilt so the browser never touches the database —
+      then extended with Court Online bundles and the operational work a firm actually does
+      around a matter.
+    </p>
+
+    <div class="meta">
+      <span class="num">236 tests</span>
+      <span class="num">15 568 lines</span>
+      <span class="num">110 files</span>
+      <span>Cloudflare Workers · D1 · R2</span>
+      <span>React 19 · Vite · Tailwind 4</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ============ Read this first ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>Read this first</h2>
+      <span class="eyebrow">Two things nothing here fixes</span>
+    </div>
+
+    <div class="stack">
+      <div class="call call--crit">
+        <h3>The original site is still live and still exposed</h3>
+        <p>
+          Browsing <code>bbcmlegal.net</code> with no login and no session renders the full
+          application: eight law firms with real contact details, eleven users, and working
+          &ldquo;delete firm&rdquo; controls. It is a client-side app talking straight to a hosted
+          Postgres with the anon key in the public bundle and no row-level gate. The data
+          includes divorce parties, SA ID numbers and payslips.
+        </p>
+        <p>
+          <strong>This rebuild does not touch that site.</strong> It needs to be taken down or
+          put behind a login as a separate, more urgent job. No data was created, modified or
+          deleted there during any of this work.
+        </p>
+      </div>
+
+      <div class="call call--warn">
+        <h3>PDF/A conformance is implemented but unvalidated</h3>
+        <p>
+          The bundles carry the required structures — <code>pdfaid:part 2</code>,
+          conformance&nbsp;B, an sRGB OutputIntent, embedded font subsets, a document
+          <code>/ID</code> — and there are tests asserting each one is present and well formed.
+          But no validator (veraPDF) was available in this environment, so nothing has issued a
+          conformance <em>verdict</em>. Run one before advertising PDF/A to a court or a client.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ What was built ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>What was built</h2>
+      <span class="eyebrow">Three phases</span>
+    </div>
+
+    <div class="cards">
+      <article class="card">
+        <span class="pill pill--done">Complete</span>
+        <h3>Phase 1 — Parity and security</h3>
+        <p>
+          Everything the original did: the four-step matter wizard, uploads, Claude vision
+          extraction with per-field confidence, review and override, the template designer,
+          documents and annexures, admin and settings.
+        </p>
+        <p>
+          Plus the part it had none of — authentication, per-firm authorisation on every route,
+          and an audit trail that is actually written to.
+        </p>
+      </article>
+
+      <article class="card">
+        <span class="pill pill--caveat">Complete · unvalidated</span>
+        <h3>Phase 2 — Court Online / CaseLines</h3>
+        <p>
+          Paginated, indexed, bookmarked bundles for upload to Court Online. Continuous page
+          numbering, an index citing the page each document actually starts on, and volume
+          splitting per the Gauteng practice directive.
+        </p>
+        <p>The PDF/A caveat above applies to this phase.</p>
+      </article>
+
+      <article class="card">
+        <span class="pill pill--done">Complete</span>
+        <h3>Phase 3 — Firm operations</h3>
+        <p>
+          Sheriff service tracking, LPC fee notes with the trust/business ledger split, and a
+          client portal that lets a client check status and send documents in without an account.
+        </p>
+        <p>
+          WhatsApp notifications and ZAR billing were deliberately not built — both need
+          commercial accounts that do not exist yet.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ The structural change ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>The one change that matters</h2>
+      <span class="eyebrow">Architecture</span>
+    </div>
+
+    <p class="prose" style="margin-bottom:20px;color:var(--ink-2)">
+      Everything else is detail. In the original, the browser held a database key and queried
+      Postgres directly, so any visitor could ask for anything. Here every read and write goes
+      through a Worker that resolves the session, derives the firm from the user, and scopes the
+      query. There is no path from the browser to the data that skips that step.
+    </p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 760 260" role="img" aria-label="Request flow: the browser talks only to the Worker, which resolves the session and scopes every query to the signed-in user's firm before touching D1, R2 or KV.">
+        <defs>
+          <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+
+        <g fill="none" stroke="currentColor" opacity=".55" stroke-width="1.6" marker-end="url(#ar)">
+          <path d="M150 80 H265"/>
+          <path d="M425 80 H540"/>
+          <path d="M355 118 V168"/>
+        </g>
+
+        <!-- browser -->
+        <rect x="20" y="48" width="130" height="64" rx="10" fill="var(--raised)" stroke="var(--line)"/>
+        <text x="85" y="74" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--ink)">Browser</text>
+        <text x="85" y="93" text-anchor="middle" font-size="11.5" fill="var(--ink-3)">holds a session cookie</text>
+        <text x="85" y="106" text-anchor="middle" font-size="11.5" fill="var(--ink-3)">and nothing else</text>
+
+        <!-- worker -->
+        <rect x="265" y="40" width="160" height="80" rx="10" fill="var(--surface)" stroke="var(--gold)" stroke-width="1.6"/>
+        <text x="345" y="66" text-anchor="middle" font-size="13.5" font-weight="700" fill="var(--ink)">Worker</text>
+        <text x="345" y="85" text-anchor="middle" font-size="11.5" fill="var(--ink-3)">session → user → firm</text>
+        <text x="345" y="102" text-anchor="middle" font-size="11.5" fill="var(--ink-3)">scopes every query</text>
+
+        <!-- stores -->
+        <rect x="540" y="20" width="200" height="40" rx="9" fill="var(--raised)" stroke="var(--line)"/>
+        <text x="640" y="45" text-anchor="middle" font-size="12.5" fill="var(--ink-2)">D1 — matters, audit trail</text>
+
+        <rect x="540" y="66" width="200" height="40" rx="9" fill="var(--raised)" stroke="var(--line)"/>
+        <text x="640" y="91" text-anchor="middle" font-size="12.5" fill="var(--ink-2)">R2 — uploads, bundles</text>
+
+        <rect x="540" y="112" width="200" height="40" rx="9" fill="var(--raised)" stroke="var(--line)"/>
+        <text x="640" y="137" text-anchor="middle" font-size="12.5" fill="var(--ink-2)">KV — sessions, rate limits</text>
+
+        <!-- denied path -->
+        <rect x="255" y="168" width="200" height="56" rx="10" fill="var(--crit-bg)" stroke="var(--crit-line)"/>
+        <text x="355" y="192" text-anchor="middle" font-size="12.5" font-weight="650" fill="var(--crit)">Another firm&rsquo;s matter</text>
+        <text x="355" y="210" text-anchor="middle" font-size="12" fill="var(--crit)">404, never 403</text>
+
+        <text x="480" y="238" text-anchor="middle" font-size="11.5" fill="var(--ink-4)">
+          403 would confirm the record exists
+        </text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ============ Decisions ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>Decisions worth knowing</h2>
+      <span class="eyebrow">The non-obvious ones</span>
+    </div>
+
+    <div class="decisions">
+      <div class="decision">
+        <h3>Cross-firm reads return 404, not 403</h3>
+        <p>
+          A 403 tells the caller the record exists and belongs to someone else. Returning 404
+          means the endpoint cannot be used to enumerate matter ids. Sixty-nine tests assert
+          this on every route, running in the real Workers runtime against real bindings rather
+          than mocks.
+        </p>
+      </div>
+
+      <div class="decision">
+        <h3>Bundles are built with pdf-lib, not HTML-to-PDF</h3>
+        <p>
+          The index has to cite the page each document actually starts on — and the cover sheets
+          and the index are themselves paginated, so adding them shifts the very numbers they
+          list. Rendering HTML would only reveal the pagination after the fact. The page plan
+          iterates to a fixed point before anything is drawn.
+        </p>
+      </div>
+
+      <div class="decision">
+        <h3>Login is rate limited before the password is checked</h3>
+        <p>
+          Password verification runs PBKDF2 at 210 000 iterations, which is the expensive part
+          of the request. Checking the limit afterwards would still refuse an attacker while
+          letting them burn CPU on every attempt. The per-account limit is deliberately looser
+          than the per-IP one, because a tight one would let anyone lock an attorney out of
+          their own files by failing logins against their address.
+        </p>
+      </div>
+
+      <div class="decision">
+        <h3>Money is formatted by hand</h3>
+        <p>
+          <code>toLocaleString('en-ZA')</code> resolves to US formatting inside the Workers
+          runtime but South African formatting in Node and browsers, so the same amount rendered
+          <span class="mono">R5,400.00</span> in a PDF and <span class="mono">R6&nbsp;560,00</span>
+          in the interface. One explicit formatter is now shared by the server, the PDF engine
+          and the UI.
+        </p>
+      </div>
+
+      <div class="decision">
+        <h3>Gold means brand; amber means caution</h3>
+        <p>
+          The two were the same colour by accident, so a warning carried no more weight than a
+          primary button — &ldquo;uncontested&rdquo; sat in alarm-amber on seven of eight template
+          rows. They are now separate scales with separate jobs, documented where the palette is
+          defined.
+        </p>
+      </div>
+
+      <div class="decision">
+        <h3>The client portal exposes surnames and nothing else</h3>
+        <p>
+          The token is 256 bits, stored only as a SHA-256 hash and shown once. Unknown, revoked
+          and expired links all return the same 404. The response is assembled field by field
+          rather than by spreading the matter row, so a column added later cannot leak into it
+          by accident. No ID numbers, addresses, income, pleadings or fee notes appear.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Bugs ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>Bugs the tests did not catch</h2>
+      <span class="eyebrow">Found by running it</span>
+    </div>
+
+    <p class="prose" style="margin-bottom:18px;color:var(--ink-2)">
+      Each of these passed a green test suite. They were found by opening the app and looking at
+      the output — which is why the walkthrough is part of the process and not a formality.
+    </p>
+
+    <div class="scroll-x">
+      <table>
+        <thead>
+          <tr><th>What was wrong</th><th>Why it was invisible</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Malformed PDF/A metadata.</strong> The em dash in a bundle title was written as byte <code>0x14</code>, a control character illegal anywhere in XML, leaving the metadata packet unparseable.</td>
+            <td>Every existing test decoded the PDF as latin-1, which round-trips any byte at all. An encoding fault could not be seen. The new tests read raw bytes.</td>
+          </tr>
+          <tr>
+            <td><strong>Centred headings were only half centred.</strong> <code>(GAUTENG DIVISION, PRETORIA)</code> sat at the left margin in every pleading, because the centre marker did not carry across a line break.</td>
+            <td>Assertions checked the markers parsed, not where the text landed.</td>
+          </tr>
+          <tr>
+            <td><strong>Bookmarks read <span class="mono">Annexure ˝D˛</span>.</strong> Outline titles were encoded in PDFDocEncoding instead of UTF-16.</td>
+            <td>The bookmark existed and had a title, which is all the test asked.</td>
+          </tr>
+          <tr>
+            <td><strong>Bundle text extracted one word per line</strong>, so phrase search in CaseLines could never match.</td>
+            <td>The text was present and correct; only its run structure was wrong. Coalescing runs also cut file size 18%.</td>
+          </tr>
+          <tr>
+            <td><strong>A seed script wrote the literal string &ldquo;undefined&rdquo;</strong> as the body of two court templates.</td>
+            <td>A regex missed one constant name. The script now throws rather than writing a placeholder.</td>
+          </tr>
+          <tr>
+            <td><strong>Login had no brute-force protection at all</strong>, over a 210 000-iteration hash.</td>
+            <td>Nothing tested for the absence of a limit. Found by re-reading delivered work rather than by a failure.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ Verification ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>What is proven, and what is not</h2>
+      <span class="eyebrow">Verification</span>
+    </div>
+
+    <div class="tiles" style="margin-bottom:22px">
+      <div class="tile"><b class="num">236</b><span>Tests passing</span></div>
+      <div class="tile"><b class="num">69</b><span>Authorisation tests</span></div>
+      <div class="tile"><b class="num">13</b><span>Test files</span></div>
+      <div class="tile"><b class="num">0</b><span>Known failures</span></div>
+    </div>
+
+    <div class="scroll-x" style="margin-bottom:18px">
+      <table>
+        <thead>
+          <tr><th>Area</th><th class="num">Tests</th><th>What it covers</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Authorisation</td><td class="num">69</td><td>Every route: 401 unauthenticated, 404 cross-firm. Runs in workerd with real D1, R2 and KV.</td></tr>
+          <tr><td>Document assembly</td><td class="num">39</td><td>Template selection by regime × contested × children, and the assembled text.</td></tr>
+          <tr><td>Firm operations</td><td class="num">23</td><td>Service status transitions, fee note totals, VAT and the trust/business split.</td></tr>
+          <tr><td>Practice documents</td><td class="num">18</td><td>Fee notes and sheriff instructions, including that each stays on one page.</td></tr>
+          <tr><td>Marker grammar</td><td class="num">15</td><td>Bold, italic, underline, centring across line breaks, tab stops, signature tables.</td></tr>
+          <tr><td>PDF/A structures</td><td class="num">14</td><td>XMP as UTF-8, no illegal control bytes, OutputIntent, embedded fonts, trailer ID.</td></tr>
+          <tr><td>Fee note maths</td><td class="num">14</td><td>Rounding, the epsilon guard, and SA money formatting.</td></tr>
+          <tr><td>Bundle assembly</td><td class="num">12</td><td>Pagination, index page references, volume packing.</td></tr>
+          <tr><td>Display helpers</td><td class="num">10</td><td>Singular and plural, including irregulars and labels with no singular form.</td></tr>
+          <tr><td>Schema, fixtures, rate limits</td><td class="num">22</td><td>SA ID validation, fixture integrity, 429 with <code>Retry-After</code>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="call call--info">
+      <h3>Not proven</h3>
+      <p>
+        PDF/A conformance has no validator verdict. The Claude extraction path has never run
+        against a real document — it needs an API key and scanned samples, and the confidence
+        threshold that decides what gets flagged for review is currently a guess. Seven screens
+        were reconstructed from the original&rsquo;s JavaScript bundle rather than copied, because
+        creating a matter in the live shared database to see them was not acceptable; they work,
+        but their layout is a design decision and deserves a look from someone who used the
+        original daily.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ Backlog ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>Deliberately not done</h2>
+      <span class="eyebrow">13 items, with context</span>
+    </div>
+
+    <p class="prose" style="margin-bottom:14px;color:var(--ink-2)">
+      Each of these is written up in <code>BACKLOG.md</code> with enough context to pick up cold.
+      Grouped by what is actually blocking them.
+    </p>
+
+    <ol class="backlog">
+      <li><b>1</b><span>Run veraPDF against a generated bundle<span class="why">Needs Java or Docker. Blocks any PDF/A claim.</span></span><span class="pill pill--crit">Blocks a claim</span></li>
+      <li><b>2</b><span>Exercise Claude extraction on a real document<span class="why">Needs an API key and scanned samples. The 0.8 confidence threshold is a guess.</span></span><span class="pill pill--caveat">Needs a key</span></li>
+      <li><b>9</b><span>Migrate data out of the original Supabase<span class="why">Do this <em>before</em> the original is taken down, and treat the export as evidence.</span></span><span class="pill pill--crit">Time-sensitive</span></li>
+      <li><b>8</b><span>The full POPIA programme<span class="why">Information Officer register, data-subject access and erasure, retention policy. The difference between &ldquo;more secure&rdquo; and &ldquo;compliant&rdquo;.</span></span><span class="pill pill--open">Deferred by choice</span></li>
+      <li><b>7</b><span>Verify the Uniform Rule 4 manner-of-service list<span class="why">Written from secondary sources; needs checking against the rule itself.</span></span><span class="pill pill--caveat">Needs a lawyer</span></li>
+      <li><b>3</b><span>WhatsApp notifications<span class="why">Needs a Meta Business account.</span></span><span class="pill pill--open">Needs an account</span></li>
+      <li><b>4</b><span>ZAR billing per firm seat<span class="why">Needs Paystack or PayFast.</span></span><span class="pill pill--open">Needs an account</span></li>
+      <li><b>5</b><span>Court Online API integration<span class="why">Needs a practitioner account with an LPC number.</span></span><span class="pill pill--open">Needs an account</span></li>
+      <li><b>6</b><span>Multi-language client output<span class="why">Needs a human legal translator. Deliberately not machine-translated.</span></span><span class="pill pill--open">Needs a person</span></li>
+      <li><b>12</b><span>Review the seven reconstructed screens<span class="why">Built from bundle strings, not copied. Worth a look from a daily user.</span></span><span class="pill pill--open">Needs review</span></li>
+      <li><b>13</b><span>Rate limiting is a fixed window in KV<span class="why">Bounds a sustained attack but is not an exact quota. A Durable Object would be.</span></span><span class="pill pill--open">Known limit</span></li>
+      <li><b>10</b><span>Bundle building is synchronous<span class="why">Fine for a divorce bundle; a large discovery bundle would hit the CPU limit.</span></span><span class="pill pill--open">Scales later</span></li>
+      <li><b>11</b><span>The frontend is one 513&nbsp;KB chunk<span class="why">Route-level code splitting would cut first paint.</span></span><span class="pill pill--open">Performance</span></li>
+    </ol>
+  </section>
+
+  <!-- ============ Running it ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>Running it</h2>
+      <span class="eyebrow">Local</span>
+    </div>
+
+    <div class="cards">
+      <article class="card">
+        <h3>Code</h3>
+        <p>
+          <code>~/bbcm-summons</code>, now a git repository with everything in one commit.
+          <code>npm test</code> runs all 236 tests; <code>npm run typecheck</code> and
+          <code>npm run build</code> are both clean.
+        </p>
+      </article>
+      <article class="card">
+        <h3>Dev servers</h3>
+        <p>
+          Apply the migrations, run <code>node apps/api/scripts/seed.mjs</code>, then start the
+          API on 8787 and the web app on 5173. Sign in as
+          <code>demo@vdm-law.co.za</code>.
+        </p>
+      </article>
+      <article class="card">
+        <h3>Interactive demo</h3>
+        <p>
+          A single self-contained HTML file in <code>demo/</code> walks the whole app with no
+          server at all, using a snapshot of real generated output. Edit
+          <code>artifact-source.html</code>, not the file generated from it.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <footer>
+    <p>
+      BBCM Summons v2 · rebuilt from bbcmlegal.net · figures on this page are read from the
+      repository and the test run, not estimated.
+    </p>
+  </footer>
+</div>
+
+<script>
+  document.getElementById('themeBtn').addEventListener('click', () => {
+    const root = document.documentElement;
+    const dark = root.getAttribute('data-theme') === 'dark'
+      || (!root.hasAttribute('data-theme') && matchMedia('(prefers-color-scheme: dark)').matches);
+    root.setAttribute('data-theme', dark ? 'light' : 'dark');
+  });
+</script>

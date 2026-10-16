@@ -1,0 +1,49 @@
+name = "bbcm-summons-api"
+main = "src/index.ts"
+compatibility_date = "2025-01-15"
+compatibility_flags = ["nodejs_compat"]
+
+# Local dev serves the API on :8787; the Vite dev server proxies /api to it.
+[dev]
+port = 8787
+
+[[d1_databases]]
+binding = "DB"
+database_name = "bbcm-summons"
+database_id = "d8bf1ce3-efd5-4538-a96d-49b14feac1ef"
+migrations_dir = "migrations"
+
+# Document storage is DISABLED on this deployment: R2 is not enabled on the Cloudflare
+# account, so the bucket does not exist and binding to it fails the deploy.
+#
+# Everything that does not touch a stored file works without it. Uploads, client-portal
+# uploads and bundles containing annexures answer 503 with an explicit message — see
+# `requireStorage` in src/lib/context.ts.
+#
+# To turn storage on: enable R2 on the account, create the bucket, uncomment this block
+# and redeploy. Nothing else changes.
+# [[r2_buckets]]
+# binding = "DOCUMENTS"
+# bucket_name = "matter-documents"
+
+[[kv_namespaces]]
+binding = "SESSIONS"
+id = "e3a6a599f79346e5b88c7c3d06d59c91"
+
+# The SPA is served by this Worker from the same origin as the API. That is not a
+# convenience: the frontend fetches relative "/api/..." paths and the session cookie is
+# SameSite=Lax, so splitting them across two origins breaks both the requests and the
+# login. Build the frontend first — `npm run build` — or this directory is empty.
+[assets]
+directory = "../web/dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+
+[vars]
+ENVIRONMENT = "production"
+# The SPA is also hosted on this origin (static files on the firm's own host). Enables
+# CORS for exactly this origin and a SameSite=None session cookie. See src/index.ts.
+WEB_ORIGIN = "https://bbcmsummons.co.za"
+
+# Secrets (set with `wrangler secret put <NAME>`):
+#   ANTHROPIC_API_KEY — Claude vision extraction

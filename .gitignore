@@ -1,0 +1,23 @@
+node_modules/
+dist/
+.wrangler/
+.dev.vars
+.env
+.env.local
+*.log
+.DS_Store
+coverage/
+
+demo/site/
+demo/bbcm-summons-site.zip
+
+demo/bbcm-summons-site/
+demo/to-upload/
+demo/bbcmsummons-golive.zip
+demo/golive.zip
+
+# Exported client data from the original Supabase — real ID numbers and payslips.
+# Evidence for the POPIA assessment; must never enter version control.
+exports/
+demo/app-site/
+demo/bbcmsummons-app.zip

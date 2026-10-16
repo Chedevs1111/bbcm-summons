@@ -1,0 +1,5 @@
+# Send every request to the application. If this host honours .htaccess the redirect is
+# server-side and instant; if not (this one appears not to), index.html still redirects.
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !^/index\.html$
+RewriteRule ^(.*)$ https://bbcm-summons-api.bbcmsummons.workers.dev/$1 [R=301,L]
